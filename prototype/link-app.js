@@ -38,11 +38,18 @@ function setLoadoutView(view){
  renderEditor();
 }
 function closeLoadout(){$('loadoutModal').hidden=true;}
-$('wandOpen').onclick=()=>setLoadoutView('wand');
-$('bagOpen').onclick=()=>setLoadoutView('bag');
-$('wandTab').onclick=()=>setLoadoutView('wand');
-$('bagTab').onclick=()=>setLoadoutView('bag');
-$('closeLoadout').onclick=closeLoadout;
+// Use delegated clicks for the two entry buttons as well as the modal tabs.
+// This keeps the controls working if the page is restored from the bfcache or
+// a host injects/replaces the top bar after the initial script evaluation.
+document.addEventListener('click',e=>{
+ const target=e.target.closest?.('#wandOpen,#bagOpen,#wandTab,#bagTab,#closeLoadout');
+ if(!target)return;
+ if(target.id==='wandOpen')setLoadoutView('wand');
+ else if(target.id==='bagOpen')setLoadoutView('bag');
+ else if(target.id==='wandTab')setLoadoutView('wand');
+ else if(target.id==='bagTab')setLoadoutView('bag');
+ else closeLoadout();
+});
 $('loadoutModal').addEventListener('click',e=>{if(e.target.closest('[data-close-loadout]'))closeLoadout();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('loadoutModal').hidden)closeLoadout();});
 let nativeDrag=null,pointerDrag=null,ignoreNextClick=false;
