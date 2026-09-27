@@ -1,0 +1,14 @@
+# Local tooling and generated artifacts
+.playwright-cli/
+output/
+logs/
+node_modules/
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Keep source documents, but ignore temporary office lock files
+~$*
