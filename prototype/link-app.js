@@ -29,6 +29,22 @@ function refresh(){const a=battle?.actors[0]||{hp:config.hp,maxHp:config.hp,shie
 function start(){try{battle=new Battle(config);paused=false;accumulator=0;renderEditor();refresh();}catch(e){$('error').textContent=e.message;}}
 function reset(){battle=null;paused=false;accumulator=0;renderEditor();refresh();}
 $('enemy').innerHTML=Object.entries(ENEMIES).map(([id,e])=>`<option value="${id}">${e.name}</option>`).join('');
+function setLoadoutView(view){
+ const modal=$('loadoutModal'),body=$('loadoutDialogBody');
+ modal.hidden=false;body.dataset.view=view;
+ $('loadoutTitle').textContent=view==='bag'?'背包':'法杖编辑';
+ $('wandTab').classList.toggle('active',view==='wand');$('bagTab').classList.toggle('active',view==='bag');
+ $('modalStatus').textContent=locked()?'战斗进行中，配置已锁定':'编辑完成后关闭此窗口返回战斗';
+ renderEditor();
+}
+function closeLoadout(){$('loadoutModal').hidden=true;}
+$('wandOpen').onclick=()=>setLoadoutView('wand');
+$('bagOpen').onclick=()=>setLoadoutView('bag');
+$('wandTab').onclick=()=>setLoadoutView('wand');
+$('bagTab').onclick=()=>setLoadoutView('bag');
+$('closeLoadout').onclick=closeLoadout;
+$('loadoutModal').addEventListener('click',e=>{if(e.target.closest('[data-close-loadout]'))closeLoadout();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('loadoutModal').hidden)closeLoadout();});
 let nativeDrag=null,pointerDrag=null,ignoreNextClick=false;
 function moveSlot(fromWand,fromIndex,toWand,toIndex){
  if(locked()||fromWand!==toWand)return;
