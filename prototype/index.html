@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>&#20313;&#28908;&#24037;&#22346;</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="link-style.css?v=20260928-2">
+  <link rel="stylesheet" href="link-style.css?v=20260928-3">
 </head>
 <body>
   <main class="game-shell">
@@ -18,7 +18,7 @@
         <label class="enemy-select">&#23545;&#25163; <select id="enemy" aria-label="&#36873;&#25321;&#23545;&#25163;"></select></label>
         <label class="switch"><input id="linksEnabled" type="checkbox" checked> &#32852;&#21160;</label>
         <div class="speed-controls" aria-label="&#25112;&#26007;&#36895;&#24230;"><button data-speed="0.5" class="active">0.5&#215;</button><button data-speed="1">1&#215;</button><button data-speed="2">2&#215;</button><button data-speed="4">4&#215;</button></div>
-        <div class="loadout-buttons" aria-label="&#35013;&#22791;&#32534;&#36753;"><button id="wandOpen" type="button">&#10022; &#27861;&#26438;</button><button id="bagOpen" type="button">&#9638; &#32972;&#21253;</button></div>
+        <div class="loadout-buttons" aria-label="&#35013;&#22791;&#32534;&#36753;"><button id="loadoutOpen" type="button">&#10022; &#27861;&#26454; / &#32972;&#21253;</button></div>
       </div>
     </header>
 
@@ -33,18 +33,18 @@
     <div class="loadout-backdrop" data-close-loadout></div>
     <div class="loadout-dialog" role="dialog" aria-modal="true" aria-labelledby="loadoutTitle">
       <header class="loadout-dialog-top">
-        <div><h2 id="loadoutTitle">&#27861;&#26438;&#32534;&#36753;</h2><span id="modalStatus" class="muted">&#25112;&#26007;&#24320;&#22987;&#21518;&#23558;&#38145;&#23450;</span></div>
-        <div class="loadout-dialog-actions"><button id="wandTab" type="button" class="active">&#27861;&#26438;</button><button id="bagTab" type="button">&#32972;&#21253;</button><button id="closeLoadout" type="button" class="close-loadout" aria-label="&#20851;&#38381;">&#10005;</button></div>
+        <div><h2 id="loadoutTitle">&#27861;&#26454; / &#32972;&#21253;</h2><span id="modalStatus" class="muted">&#25112;&#26007;&#24320;&#22987;&#21518;&#23558;&#38145;&#23450;</span></div>
+        <div class="loadout-dialog-actions"><button id="closeLoadout" type="button" class="close-loadout" aria-label="&#20851;&#38381;">&#10005;</button></div>
       </header>
-      <div id="loadoutDialogBody" class="loadout-dialog-body" data-view="wand">
-        <section class="loadout-panel wand-panel" data-loadout-panel="wand"><div class="section-bar"><h2>&#27861;&#26438;</h2><span id="budget" class="badge"></span></div><div id="wandEditors"></div><p id="error" class="error" role="alert"></p></section>
-        <section class="loadout-panel spell-panel" data-loadout-panel="wand"><div class="section-bar"><h2>&#27861;&#26415;</h2><span class="muted">&#36873;&#25321;&#21345;&#27133;&#32534;&#36753;</span></div><div id="inspector"></div></section>
+      <div id="loadoutDialogBody" class="loadout-dialog-body" data-view="all">
+        <section class="loadout-panel wand-panel" data-loadout-panel="wand"><div class="section-bar"><h2>&#27861;&#26454;</h2><span id="budget" class="badge"></span></div><div id="wandEditors"></div><p id="error" class="error" role="alert"></p></section>
         <section class="loadout-panel bag-panel" data-loadout-panel="bag"><div class="section-bar"><h2>&#32972;&#21253;</h2><span id="installTarget" class="target-label"></span></div><div class="filters"><button data-filter="all" class="active">&#20840;&#37096;</button><button data-filter="spell">&#27861;&#26415;</button><button data-filter="rune">&#31526;&#25991;</button></div><div id="library"></div></section>
+        <section class="loadout-panel spell-panel" data-loadout-panel="wand"><div class="section-bar"><h2>&#27861;&#26415;&#21442;&#25968;</h2><span class="muted">&#36873;&#25321;&#21345;&#27133;&#32534;&#36753;</span></div><div id="inspector"></div></section>
       </div>
     </div>
   </section>
 
-  <script src="link-engine.js?v=20260928-2"></script>
-  <script src="link-app.js?v=20260928-2"></script>
+  <script src="link-engine.js?v=20260928-3"></script>
+  <script src="link-app.js?v=20260928-3"></script>
 </body>
 </html>
