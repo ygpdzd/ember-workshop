@@ -568,3 +568,46 @@ body {
     grid-row: 1;
   }
 }
+
+
+/* Portrait battle HUD: keep the player, timer and enemy readable as a
+   vertical stack instead of squeezing three columns into a phone width. */
+@media (orientation: portrait), (max-width: 650px) {
+  .battle-hud {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+    gap: 3px;
+    padding: 7px 10px 8px;
+    background: linear-gradient(#101519ee 0%, #101519cc 72%, transparent 100%);
+  }
+
+  .player-hud {
+    order: 1;
+  }
+
+  .battle-clock {
+    order: 2;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 7px;
+  }
+
+  .enemy-hud {
+    order: 3;
+    text-align: left;
+  }
+
+  .enemy-hud .hud-name,
+  .enemy-hud .actor-effects {
+    justify-content: flex-start;
+  }
+
+  .battle-clock b {
+    font-size: 17px;
+  }
+
+  .battle-clock small {
+    display: inline;
+  }
+}
