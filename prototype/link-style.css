@@ -611,3 +611,67 @@ body {
     display: inline;
   }
 }
+
+
+/* Unified loadout workspace: wand, spell library and inspector stay visible
+   together so installing a spell does not require switching tabs. */
+.loadout-dialog-body[data-view=all] {
+  grid-template-columns: minmax(300px, 1.28fr) minmax(230px, .9fr) minmax(220px, .82fr);
+}
+
+.loadout-dialog-body[data-view=all] .wand-panel {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.loadout-dialog-body[data-view=all] .bag-panel {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.loadout-dialog-body[data-view=all] .spell-panel {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.loadout-dialog-body[data-view=all] #library {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+  padding: 7px;
+}
+
+.loadout-dialog-body[data-view=all] .library-card {
+  grid-template-columns: 24px minmax(0, 1fr);
+  padding: 6px;
+  gap: 0 5px;
+}
+
+.loadout-dialog-body[data-view=all] .library-card .icon {
+  font-size: 18px;
+}
+
+.loadout-dialog-body[data-view=all] .library-card strong {
+  font-size: 10px;
+}
+
+.loadout-dialog-body[data-view=all] .library-card small {
+  font-size: 8px;
+  line-height: 1.35;
+}
+
+@media (orientation: portrait), (max-width: 650px) {
+  .loadout-dialog-body[data-view=all] {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(205px, 1.12fr) minmax(175px, .92fr) minmax(150px, .78fr);
+  }
+
+  .loadout-dialog-body[data-view=all] .wand-panel,
+  .loadout-dialog-body[data-view=all] .bag-panel,
+  .loadout-dialog-body[data-view=all] .spell-panel {
+    grid-column: 1;
+  }
+
+  .loadout-dialog-body[data-view=all] .wand-panel { grid-row: 1; }
+  .loadout-dialog-body[data-view=all] .bag-panel { grid-row: 2; }
+  .loadout-dialog-body[data-view=all] .spell-panel { grid-row: 3; }
+}
