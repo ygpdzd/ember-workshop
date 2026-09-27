@@ -12,7 +12,7 @@ function changed(){renderEditor();refresh();}
 function renderEditor(){
  const invalid=validate(config);$('error').textContent=invalid.join(' ');$('budget').textContent=`${totalSlots()} / 8`;
  $('enemy').value=config.enemy;$('linksEnabled').checked=config.links;$('enemy').disabled=locked();$('linksEnabled').disabled=locked();
- $('wandEditors').innerHTML=config.wands.map((w,i)=>`<article class="wand-editor ${i===selectedWand?'selected':''}"><div class="wand-editor-top"><b>法杖 ${names[i]} <span class="muted">${w.cards.length}/${w.capacity}</span></b><button data-select-wand="${i}" ${locked()?'disabled':''}>${i===selectedWand?'编辑中':'选择'}</button></div><div class="wand-numbers"><label>间隔 <input aria-label="法杖${names[i]}间隔" data-wand-field="interval" data-wand="${i}" type="number" min="0.4" max="3" step="0.1" value="${w.interval}" ${locked()?'disabled':''}> 秒</label><label>容量 <select aria-label="法杖${names[i]}容量" data-wand-field="capacity" data-wand="${i}" ${locked()?'disabled':''}>${[1,2,3,4,5].map(v=>`<option ${v===w.capacity?'selected':''}>${v}</option>`).join('')}</select></label></div><div class="slots">${w.cards.map((c,j)=>{const d=CARDS[c.id];return `<div class="slot ${d.kind==='rune'?'rune':''} ${i===selectedWand&&j===selectedSlot?'is-selected':''}" style="--card:${d.color}"><button class="slot-select" data-inspect-wand="${i}" data-inspect-slot="${j}" aria-label="查看${names[i]}杖第${j+1}槽${d.name}"><small>${String(j+1).padStart(2,'0')}</small><strong>${d.icon}</strong><span>${d.name}</span></button><div class="slot-actions"><button aria-label="左移" data-move="${i},${j},-1" ${locked()||j===0?'disabled':''}>‹</button><button aria-label="移除" data-remove="${i},${j}" ${locked()?'disabled':''}>×</button><button aria-label="右移" data-move="${i},${j},1" ${locked()||j===w.cards.length-1?'disabled':''}>›</button></div></div>`;}).join('')}${Array.from({length:Math.max(0,w.capacity-w.cards.length)},()=>'<div class="slot empty">＋</div>').join('')}</div></article>`).join('');
+ $('wandEditors').innerHTML=config.wands.map((w,i)=>`<article class="wand-editor ${i===selectedWand?'selected':''}"><div class="wand-editor-top"><b>法杖 ${names[i]} <span class="muted">${w.cards.length}/${w.capacity}</span></b><button data-select-wand="${i}" ${locked()?'disabled':''}>${i===selectedWand?'编辑中':'选择'}</button></div><div class="wand-numbers"><label>间隔 <input aria-label="法杖${names[i]}间隔" data-wand-field="interval" data-wand="${i}" type="number" min="0.4" max="3" step="0.1" value="${w.interval}" ${locked()?'disabled':''}> 秒</label><label>容量 <select aria-label="法杖${names[i]}容量" data-wand-field="capacity" data-wand="${i}" ${locked()?'disabled':''}>${[1,2,3,4,5].map(v=>`<option ${v===w.capacity?'selected':''}>${v}</option>`).join('')}</select></label></div><div class="slots">${w.cards.map((c,j)=>{const d=CARDS[c.id];return `<div class="slot ${d.kind==='rune'?'rune':''} ${i===selectedWand&&j===selectedSlot?'is-selected':''}" data-slot-wand="${i}" data-slot-index="${j}" draggable="${!locked()}" style="--card:${d.color}"><button class="slot-select" data-inspect-wand="${i}" data-inspect-slot="${j}" aria-label="查看${names[i]}杖第${j+1}槽${d.name}"><small>${String(j+1).padStart(2,'0')}</small><strong>${d.icon}</strong><span>${d.name}</span></button><div class="slot-actions"><button aria-label="左移" data-move="${i},${j},-1" ${locked()||j===0?'disabled':''}>‹</button><button aria-label="移除" data-remove="${i},${j}" ${locked()?'disabled':''}>×</button><button aria-label="右移" data-move="${i},${j},1" ${locked()||j===w.cards.length-1?'disabled':''}>›</button></div></div>`;}).join('')}${Array.from({length:Math.max(0,w.capacity-w.cards.length)},()=>'<div class="slot empty">＋</div>').join('')}</div></article>`).join('');
  renderLibrary();renderInspector();
 }function renderLibrary(){
  const w=config.wands[selectedWand];$('installTarget').textContent='装入 '+names[selectedWand]+' 杖';
@@ -29,7 +29,52 @@ function refresh(){const a=battle?.actors[0]||{hp:config.hp,maxHp:config.hp,shie
 function start(){try{battle=new Battle(config);paused=false;accumulator=0;renderEditor();refresh();}catch(e){$('error').textContent=e.message;}}
 function reset(){battle=null;paused=false;accumulator=0;renderEditor();refresh();}
 $('enemy').innerHTML=Object.entries(ENEMIES).map(([id,e])=>`<option value="${id}">${e.name}</option>`).join('');
-$('wandEditors').onclick=e=>{const inspect=e.target.closest('[data-inspect-wand]');if(inspect){selectedWand=Number(inspect.dataset.inspectWand);selectedSlot=Number(inspect.dataset.inspectSlot);renderEditor();return;}if(locked())return;const select=e.target.closest('[data-select-wand]'),remove=e.target.closest('[data-remove]'),move=e.target.closest('[data-move]');if(select){selectedWand=Number(select.dataset.selectWand);selectedSlot=0;renderEditor();}if(remove){const [i,j]=remove.dataset.remove.split(',').map(Number);config.wands[i].cards.splice(j,1);selectedWand=i;selectedSlot=Math.max(0,Math.min(j,config.wands[i].cards.length-1));changed();}if(move){const [i,j,d]=move.dataset.move.split(',').map(Number),a=config.wands[i].cards;[a[j],a[j+d]]=[a[j+d],a[j]];selectedWand=i;selectedSlot=j+d;changed();}};
+let nativeDrag=null,pointerDrag=null,ignoreNextClick=false;
+function moveSlot(fromWand,fromIndex,toWand,toIndex){
+ if(locked()||fromWand!==toWand)return;
+ const cards=config.wands[fromWand].cards;
+ if(fromIndex===toIndex||!cards[fromIndex]||!cards[toIndex])return;
+ const [card]=cards.splice(fromIndex,1);
+ const insert=Math.max(0,Math.min(cards.length,toIndex));
+ cards.splice(insert,0,card);selectedWand=fromWand;selectedSlot=insert;changed();
+}
+function clearDragClasses(){document.querySelectorAll('.slot.dragging,.slot.drag-over').forEach(x=>x.classList.remove('dragging','drag-over'));}
+function slotFromPoint(x,y){const el=document.elementFromPoint(x,y);return el&&el.closest?.('.slot[data-slot-wand]');}
+$('wandEditors').onclick=e=>{if(ignoreNextClick){ignoreNextClick=false;return;}const inspect=e.target.closest('[data-inspect-wand]');if(inspect){selectedWand=Number(inspect.dataset.inspectWand);selectedSlot=Number(inspect.dataset.inspectSlot);renderEditor();return;}if(locked())return;const select=e.target.closest('[data-select-wand]'),remove=e.target.closest('[data-remove]'),move=e.target.closest('[data-move]');if(select){selectedWand=Number(select.dataset.selectWand);selectedSlot=0;renderEditor();}if(remove){const [i,j]=remove.dataset.remove.split(',').map(Number);config.wands[i].cards.splice(j,1);selectedWand=i;selectedSlot=Math.max(0,Math.min(j,config.wands[i].cards.length-1));changed();}if(move){const [i,j,d]=move.dataset.move.split(',').map(Number),a=config.wands[i].cards;[a[j],a[j+d]]=[a[j+d],a[j]];selectedWand=i;selectedSlot=j+d;changed();}};
+$('wandEditors').ondragstart=e=>{
+ if(locked())return;
+ const slot=e.target.closest('.slot[data-slot-wand]');if(!slot)return;
+ nativeDrag={wand:Number(slot.dataset.slotWand),index:Number(slot.dataset.slotIndex)};
+ slot.classList.add('dragging');e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',JSON.stringify(nativeDrag));
+};
+$('wandEditors').ondragover=e=>{
+ const slot=e.target.closest('.slot[data-slot-wand]');if(!slot||!nativeDrag||Number(slot.dataset.slotWand)!==nativeDrag.wand)return;
+ e.preventDefault();clearDragClasses();slot.classList.add('drag-over');e.dataTransfer.dropEffect='move';
+};
+$('wandEditors').ondrop=e=>{
+ const slot=e.target.closest('.slot[data-slot-wand]');if(!slot||!nativeDrag)return;
+ e.preventDefault();moveSlot(nativeDrag.wand,nativeDrag.index,Number(slot.dataset.slotWand),Number(slot.dataset.slotIndex));nativeDrag=null;clearDragClasses();
+};
+$('wandEditors').ondragend=()=>{nativeDrag=null;clearDragClasses();};
+$('wandEditors').addEventListener('pointerdown',e=>{
+ if(locked()||e.pointerType==='mouse')return;
+ const slot=e.target.closest('.slot[data-slot-wand]');if(!slot)return;
+ pointerDrag={slot,wand:Number(slot.dataset.slotWand),index:Number(slot.dataset.slotIndex),x:e.clientX,y:e.clientY,active:false};slot.setPointerCapture?.(e.pointerId);
+});
+$('wandEditors').addEventListener('pointermove',e=>{
+ if(!pointerDrag)return;
+ const distance=Math.hypot(e.clientX-pointerDrag.x,e.clientY-pointerDrag.y);
+ if(!pointerDrag.active&&distance<8)return;
+ pointerDrag.active=true;e.preventDefault();pointerDrag.slot.classList.add('dragging');clearDragClasses();pointerDrag.slot.classList.add('dragging');
+ const over=slotFromPoint(e.clientX,e.clientY);if(over&&Number(over.dataset.slotWand)===pointerDrag.wand)over.classList.add('drag-over');
+});
+$('wandEditors').addEventListener('pointerup',e=>{
+ if(!pointerDrag)return;
+ const drag=pointerDrag;pointerDrag=null;if(!drag.active){return;}
+ const over=slotFromPoint(e.clientX,e.clientY);if(over&&Number(over.dataset.slotWand)===drag.wand){moveSlot(drag.wand,drag.index,drag.wand,Number(over.dataset.slotIndex));ignoreNextClick=true;}
+ clearDragClasses();
+});
+$('wandEditors').addEventListener('pointercancel',()=>{pointerDrag=null;clearDragClasses();});
 $('wandEditors').onchange=e=>{if(locked()||!e.target.dataset.wandField)return;const el=e.target;config.wands[Number(el.dataset.wand)][el.dataset.wandField]=el.value===''?NaN:Number(el.value);changed();};$('library').onclick=e=>{const b=e.target.closest('[data-add]');if(!b||locked())return;const w=config.wands[selectedWand];if(w.cards.length>=w.capacity||totalSlots()>=8)return;w.cards.push(makeCard(b.dataset.add));selectedSlot=w.cards.length-1;changed();};$('inspector').onchange=e=>{if(locked()||!e.target.dataset.param)return;config.wands[selectedWand].cards[selectedSlot].params[e.target.dataset.param]=e.target.value===''?NaN:Number(e.target.value);changed();};$('enemy').onchange=()=>{if(!locked()){config.enemy=$('enemy').value;changed();}};$('linksEnabled').onchange=()=>{if(!locked()){config.links=$('linksEnabled').checked;changed();}};$('start').onclick=start;$('reset').onclick=reset;$('pause').onclick=()=>{paused=!paused;accumulator=0;refresh();};for(const b of document.querySelectorAll('[data-speed]'))b.onclick=()=>{speed=Number(b.dataset.speed);accumulator=0;document.querySelectorAll('[data-speed]').forEach(x=>x.classList.toggle('active',x===b));};for(const b of document.querySelectorAll('[data-filter]'))b.onclick=()=>{filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));renderLibrary();};function line(x1,y1,x2,y2,color,width=1){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
 function circle(x,y,r,color,fill=false){ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);if(fill){ctx.fillStyle=color;ctx.fill();}else{ctx.strokeStyle=color;ctx.stroke();}}
 function text(str,x,y,color='#9aad8d',size=12,align='center'){ctx.font=`${size}px "Microsoft YaHei",sans-serif`;ctx.fillStyle=color;ctx.textAlign=align;ctx.fillText(str,x,y);}
@@ -90,6 +135,9 @@ function draw(){
  }
 }function frame(stamp){const elapsed=Math.min(.1,(stamp-lastStamp)/1000);lastStamp=stamp;if(battle&&!paused&&!battle.result){accumulator+=elapsed*speed;while(accumulator>=1/60&&!battle.result){battle.step();accumulator-=1/60;}}if(stamp-lastUi>80){refresh();lastUi=stamp;}draw();requestAnimationFrame(frame);}
 renderEditor();refresh();requestAnimationFrame(frame);
+
+
+
 
 
 
