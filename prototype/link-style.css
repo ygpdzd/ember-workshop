@@ -19,3 +19,300 @@
 body{background:#0b0f12;color:#e4e6d5}.game-shell{max-width:1440px;margin:0 auto;padding:0 22px 28px}.game-topbar{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid #303735}.game-title{display:flex;align-items:center;gap:9px;font-size:17px;letter-spacing:1px;font-weight:700;white-space:nowrap}.title-mark{color:#e4c57f;font-size:27px}.battle-actions{display:flex;align-items:center;justify-content:flex-end;gap:7px;flex-wrap:wrap}.battle-actions button{padding:6px 10px}.enemy-select,.switch{font-size:11px;color:#abb6a0;display:flex;align-items:center;gap:5px}.enemy-select select{padding:5px 7px}.speed-controls{display:flex;gap:2px}.speed-controls button{padding:5px 8px;font-size:11px}.speed-controls button.active{background:#806b3d;border-color:#d6b771;color:#fff3ce}.battle-view{position:relative;margin-top:14px;border:1px solid #343a39;background:#13191c;overflow:hidden}.battle-hud{position:absolute;z-index:2;left:0;right:0;top:0;display:grid;grid-template-columns:1fr 110px 1fr;gap:28px;padding:14px 22px;background:linear-gradient(#101519dd,transparent);pointer-events:none}.hud-side{min-width:0}.enemy-hud{text-align:right}.hud-name{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:#d7ddca}.enemy-hud .hud-name{justify-content:flex-end}.hud-name b,.hud-name span{font:11px Consolas,monospace;color:#eadcae}.battle-clock{text-align:center}.battle-clock b{font:24px Consolas,monospace;color:#e4c57f}.battle-clock small{display:block;font-size:9px;color:#9da99b}.battle-view .health{margin:6px 0;height:5px;background:#070a0b}.battle-view .health i{background:#a7bd84}.battle-view .enemy-hud .health i{background:#c7846c}.actor-effects{min-height:21px;display:flex;gap:5px;flex-wrap:wrap;font-size:10px}.enemy-hud .actor-effects{justify-content:flex-end}.stage{margin:0;background:#0f1518}.stage canvas{display:block;width:100%;height:auto;min-height:330px;object-fit:contain}.battle-result{position:absolute;z-index:3;left:50%;bottom:16px;transform:translateX(-50%);display:flex;gap:14px;align-items:center;padding:8px 15px;border:1px solid #cfaf6c;background:#1e211cdd;color:#f4e6bd}.loadout-area{display:grid;grid-template-columns:1.25fr 1fr .75fr;gap:12px;margin-top:14px;align-items:start}.loadout-panel{border:1px solid #303936;background:#151c1a;min-width:0}.section-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 14px;border-bottom:1px solid #303936}.section-bar h2{font-size:14px;margin:0}.target-label,.badge{font-size:10px;color:#d9bf83}.error{min-height:18px;margin:5px 14px;color:#df9a7c;font-size:11px}.wand-editor{margin:10px;border-color:#38453b;border-radius:5px;background:#101716}.wand-editor-top{padding:10px 12px}.wand-numbers{padding:0 12px 8px}.queue-preview,.rune-preview{display:none}.bag-panel .filters{padding:9px 12px;border-bottom:1px solid #303936}.filters button{font-size:11px;padding:5px 9px}.filters button.active{color:#f0d38e;border-color:#a6884e;background:#2d2a1d}#library{padding:10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;max-height:470px;overflow:auto}.library-card{position:relative;display:grid;grid-template-columns:30px 1fr;grid-template-rows:auto auto;gap:0 8px;text-align:left;padding:8px;border-color:#3b463d;background:#101715}.library-card .icon{grid-row:1 / span 2;font-size:24px;color:var(--card)}.library-card strong{font-size:11px}.library-card small{font-size:9px;color:#95a28f}.library-card .plus{position:absolute;right:6px;top:4px;color:#dcb96e}.spell-panel{min-height:200px}.spell-panel #inspector{padding:14px}.inspect-title{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid #303936}.inspect-title>span{font-size:28px;color:var(--card)}.inspect-title h3{margin:0;font-size:14px}.inspect-title small,.inspect-desc,.inspect-foot{font-size:10px;color:#9eaa9b}.inspect-desc{margin:11px 0}.param-field{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:7px 0;border-top:1px solid #29332e;font-size:11px}.param-field span small{display:block;color:#778579;font-size:9px}.param-field input{width:78px}.slot{width:calc((100% - 18px)/4)}
 @media(max-width:980px){.loadout-area{grid-template-columns:1fr 1fr}.spell-panel{grid-column:1 / -1}.game-topbar{align-items:flex-start;flex-direction:column;padding:12px 0}.battle-actions{justify-content:flex-start}.battle-hud{grid-template-columns:1fr 80px 1fr;gap:12px;padding:11px}.stage canvas{min-height:280px}.slot{width:calc((100% - 18px)/4)}}
 @media(max-width:650px){.game-shell{padding:0 10px 18px}.battle-actions{gap:4px}.battle-actions button{font-size:11px;padding:6px 8px}.enemy-select{order:5}.speed-controls{order:6}.battle-hud{position:relative;grid-template-columns:1fr 68px 1fr;padding:9px 10px;background:#101618}.battle-clock b{font-size:18px}.battle-clock small{font-size:8px}.stage canvas{min-height:210px}.loadout-area{grid-template-columns:1fr}.spell-panel{grid-column:auto}#library{grid-template-columns:repeat(3,minmax(0,1fr))}.library-card{display:block;padding:7px;text-align:center}.library-card .icon{display:block}.library-card strong,.library-card small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.slot{width:calc((100% - 18px)/4)}.wand-numbers{display:flex;gap:10px;flex-wrap:wrap}}
+
+/* Fixed viewport layout + reorderable spell slots */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  min-height: 100dvh;
+}
+
+.game-shell {
+  width: 100%;
+  max-width: 1440px;
+  height: 100dvh;
+  margin: 0 auto;
+  padding: 12px 22px;
+  display: grid;
+  grid-template-rows: auto minmax(220px, 36dvh) minmax(0, 1fr);
+  gap: 12px;
+  overflow: hidden;
+}
+
+.game-topbar {
+  min-height: 0;
+  height: auto;
+  padding: 0;
+}
+
+.battle-view {
+  min-height: 0;
+  height: 100%;
+  margin-top: 0;
+}
+
+.stage {
+  height: 100%;
+  min-height: 0;
+}
+
+.stage canvas {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: contain;
+}
+
+.loadout-area {
+  min-height: 0;
+  height: 100%;
+  margin-top: 0;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.loadout-panel {
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+#wandEditors,
+#library,
+#inspector {
+  min-height: 0;
+}
+
+#wandEditors {
+  flex: 1;
+  overflow: auto;
+  scrollbar-width: thin;
+  padding: 10px 0 0;
+}
+
+.wand-editor {
+  flex-shrink: 0;
+}
+
+#library,
+.spell-panel #inspector {
+  flex: 1;
+  max-height: none;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+
+.slots {
+  min-height: 0;
+}
+
+.slot {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.slot:active {
+  cursor: grabbing;
+}
+
+.slot.dragging {
+  opacity: .38;
+  transform: scale(.98);
+}
+
+.slot.drag-over {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  background: #2d3321;
+}
+
+@media (orientation: portrait), (max-width: 650px) {
+  .game-shell {
+    height: 100dvh;
+    padding: 7px;
+    gap: 7px;
+    grid-template-rows: auto minmax(185px, 31dvh) minmax(0, 1fr);
+  }
+
+  .game-title {
+    font-size: 14px;
+  }
+
+  .title-mark {
+    font-size: 22px;
+  }
+
+  .game-topbar {
+    gap: 5px;
+  }
+
+  .battle-actions {
+    gap: 3px;
+  }
+
+  .battle-actions button,
+  .enemy-select select,
+  .speed-controls button {
+    padding: 4px 6px;
+    font-size: 10px;
+  }
+
+  .battle-hud {
+    position: absolute;
+    padding: 7px;
+    grid-template-columns: 1fr 58px 1fr;
+    gap: 6px;
+  }
+
+  .battle-clock b {
+    font-size: 16px;
+  }
+
+  .battle-clock small {
+    font-size: 8px;
+  }
+
+  .loadout-area {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr);
+    grid-template-rows: minmax(0, 1.12fr) minmax(0, .88fr);
+    gap: 7px;
+  }
+
+  .wand-panel {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+
+  .bag-panel {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .spell-panel {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .section-bar {
+    padding: 7px 8px;
+  }
+
+  #wandEditors {
+    padding-top: 5px;
+  }
+
+  .wand-editor {
+    margin: 5px;
+  }
+
+  .wand-editor-top {
+    padding: 6px 7px;
+  }
+
+  .wand-numbers {
+    padding: 0 7px 5px;
+    gap: 5px;
+  }
+
+  input[type=number],
+  select {
+    padding: 4px 5px;
+    font-size: 10px;
+  }
+
+  input[type=number] {
+    width: 63px;
+  }
+
+  .slots {
+    gap: 4px;
+    padding: 5px;
+  }
+
+  .slot {
+    width: calc((100% - 4px) / 2);
+    min-height: 62px;
+  }
+
+  .slot-select {
+    padding: 4px;
+  }
+
+  .slot-select strong {
+    font-size: 17px;
+  }
+
+  .slot-select span {
+    font-size: 9px;
+  }
+
+  .slot-actions button {
+    padding: 1px 4px;
+    font-size: 10px;
+  }
+
+  #library {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 5px;
+  }
+
+  .library-card {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    padding: 4px;
+    min-height: 40px;
+    text-align: left;
+  }
+
+  .library-card .icon {
+    font-size: 17px;
+  }
+
+  .library-card strong,
+  .library-card small {
+    font-size: 8px;
+  }
+
+  .spell-panel #inspector {
+    padding: 7px;
+  }
+
+  .inspect-title {
+    gap: 6px;
+    padding-bottom: 5px;
+  }
+
+  .inspect-title > span {
+    font-size: 20px;
+  }
+
+  .inspect-desc,
+  .inspect-foot,
+  .inspect-title small {
+    font-size: 8px;
+  }
+
+  .param-field {
+    padding: 3px 0;
+    font-size: 9px;
+  }
+
+  .param-field span small {
+    font-size: 7px;
+  }
+
+  .param-field input {
+    width: 55px;
+  }
+}
