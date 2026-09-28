@@ -675,3 +675,59 @@ body {
   .loadout-dialog-body[data-view=all] .bag-panel { grid-row: 2; }
   .loadout-dialog-body[data-view=all] .spell-panel { grid-row: 3; }
 }
+
+/* Compact wand strip: cards stay small so the editor reads like a loadout
+   bar while retaining the icon, slot number and drag target. */
+.loadout-dialog-body[data-view=all] .wand-panel .slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding: 4px;
+}
+
+.loadout-dialog-body[data-view=all] .wand-panel .slot {
+  width: calc((100% - 12px) / 5);
+  min-height: 0;
+  border-radius: 3px;
+}
+
+.loadout-dialog-body[data-view=all] .wand-panel .slot .slot-select {
+  min-height: 42px;
+  padding: 2px 3px 1px;
+}
+
+.loadout-dialog-body[data-view=all] .wand-panel .slot .slot-select small {
+  font-size: 6px;
+  line-height: 1;
+}
+
+.loadout-dialog-body[data-view=all] .wand-panel .slot .slot-select strong {
+  font-size: 12px;
+  line-height: 1.05;
+}
+
+.loadout-dialog-body[data-view=all] .wand-panel .slot .slot-select span {
+  width: 100%;
+  overflow: hidden;
+  font-size: 7px;
+  line-height: 1.05;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.loadout-dialog-body[data-view=all] .wand-panel .slot-actions {
+  min-height: 13px;
+}
+
+.loadout-dialog-body[data-view=all] .wand-panel .slot-actions button {
+  min-width: 0;
+  height: 13px;
+  padding: 0 2px;
+  font-size: 8px;
+  line-height: 12px;
+}
+
+.loadout-dialog-body[data-view=all] .wand-panel .slot.empty {
+  min-height: 42px;
+  font-size: 11px;
+}
